@@ -66,7 +66,7 @@ function App() {
   return (
     <>
       <div style={{ marginLeft: "6rem", marginRight: "6rem" }}>
-        <form style={{ background: "skyblue" }}>
+        <form>
           <h2>Student Registration</h2>
           <div>
             <span>Student Name: </span>
