@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { CustomInput } from "./CustomInput/CustomInput";
+import { CustomInput } from "./CustomInput";
+import { Button } from "./Button";
 import "./App.css";
 import axios from "axios";
 
@@ -9,6 +10,8 @@ function App() {
     boardId: null,
     mediumId: null,
     standardId: null,
+    password: "",
+    confirmPassword: "",
   });
   const [boardOptions, setBoardOptions] = useState([]);
   const [mediumOptions, setMediumOptions] = useState([]);
@@ -63,10 +66,38 @@ function App() {
     setFormValues({ ...formValues, standardId: e.target.value });
   };
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      !formValues.name ||
+      !formValues.boardId ||
+      !formValues.mediumId ||
+      !formValues.standardId ||
+      !formValues.password ||
+      !formValues.confirmPassword
+    ) {
+      alert("Enter all Values");
+      return;
+    }
+    if (formValues.password !== formValues.confirmPassword) {
+      alert("Password and confirm Password do not match!");
+      return;
+    } else {
+      console.log("dhwfgyu");
+      const response = await axios.post(
+        "https://www.qlsacademy.com/api/students",
+        {
+          ...formValues,
+        }
+      );
+      console.log(response);
+    }
+  };
+
   return (
     <>
       <div style={{ marginLeft: "6rem", marginRight: "6rem" }}>
-        <form>
+        <form onSubmit={onSubmit}>
           <h2>Student Registration</h2>
           <div>
             <span>Student Name: </span>
@@ -90,7 +121,6 @@ function App() {
               ))}
             </select>
           </div>
-          {/* {boardOptions && mediumOptions && ( */}
           <div>
             <span>Medium: </span>
             <select onChange={handleMediumSelectChange}>
@@ -102,9 +132,7 @@ function App() {
               ))}
             </select>
           </div>
-          {/* )} */}
 
-          {/* {boardOptions && mediumOptions && standardOptions && ( */}
           <div>
             <span>Standard: </span>
             <select onChange={handleStandardSelectChange}>
@@ -116,11 +144,10 @@ function App() {
               ))}
             </select>
           </div>
-          {/* )} */}
           <div>
             <span>Password: </span>
             <CustomInput
-              type="passsword"
+              type="password"
               value={formValues.password}
               onChange={(e) =>
                 setFormValues({ ...formValues, password: e.target.value })
@@ -131,7 +158,7 @@ function App() {
           <div>
             <span>Confirm Password: </span>
             <CustomInput
-              type="passsword"
+              type="password"
               value={formValues.confirmPassword}
               onChange={(e) =>
                 setFormValues({
@@ -142,6 +169,8 @@ function App() {
               required
             />
           </div>
+
+          <Button>Submit</Button>
         </form>
       </div>
     </>
